@@ -44,5 +44,17 @@
         android:layout_height="wrap_content"
         android:text="@string/question" />
 
+    <!--    Lab 2-6: Image Views-->
+    <ImageView
+        android:id="@+id/myImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/logo_algonquin" />
+
+    <ImageButton
+        android:id="@+id/myImageBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/logo_algonquin" />
 
 </LinearLayout>

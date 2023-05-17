@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -36,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
         final CheckBox myCheckBox = mainBinding.myCheckBox;
         final Switch mySwitch = mainBinding.mySwitch;
         final RadioButton myRadioBtn = mainBinding.myRadioBtn;
+        final ImageView myImageView = mainBinding.myImageView;
+        final ImageButton myImageBtn = mainBinding.myImageBtn;
         // Gets View Model
         mainModel = new ViewModelProvider(this).get(MainViewModel.class);
 
@@ -60,5 +64,9 @@ public class MainActivity extends AppCompatActivity {
             myRadioBtn.setChecked(isChecked);
             Toast.makeText(getApplicationContext(), "The value is now: " + isChecked, Toast.LENGTH_SHORT).show();
         });
+
+        // Lab 2-6: Image Views
+        myImageView.setOnClickListener(v -> Toast.makeText(getApplicationContext(), "You just clicked the: " + v.getId(), Toast.LENGTH_SHORT).show());
+        myImageBtn.setOnClickListener(v -> Toast.makeText(getApplicationContext(), "The width = " + v.getWidth() + " and height = " + v.getHeight(), Toast.LENGTH_SHORT).show());
     }
 }
