@@ -1,7 +1,9 @@
 package algonquin.cst2335.han00135;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -16,6 +18,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class SecondActivity extends AppCompatActivity {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +35,11 @@ public class SecondActivity extends AppCompatActivity {
         ImageView cameraImg = findViewById(R.id.cameraImg);
         Button chgPicBtn = findViewById(R.id.chgPicBtn);
 
+        // Preferences
+        SharedPreferences prefs = getSharedPreferences("myData", Context.MODE_PRIVATE);
+        phoneNum.setText(prefs.getString("phoneNum", ""));
+
+        // Welcome EmailAddress
         welcomeTextView.setText("Welcome Back " + emailAddress);
         callBtn.setOnClickListener(v -> {
             Intent call = new Intent(Intent.ACTION_DIAL);
@@ -59,4 +67,16 @@ public class SecondActivity extends AppCompatActivity {
             cameraResult.launch(cameraIntent);
         });
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        SharedPreferences prefs = getSharedPreferences("myData", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        TextView phoneNum = findViewById(R.id.phoneNum);
+        editor.putString("phoneNum", phoneNum.getText().toString());
+        editor.apply();
+    }
+
 }
