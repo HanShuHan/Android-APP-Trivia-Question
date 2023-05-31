@@ -41,7 +41,7 @@
         app:layout_constraintStart_toEndOf="@+id/phoneNum" />
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/cameraImg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="112dp"
@@ -49,4 +49,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/phoneNum"
         app:srcCompat="@android:drawable/ic_menu_camera" />
+
+    <Button
+        android:id="@+id/chgPicBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="72dp"
+        android:text="CHANGE PICTURE"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/cameraImg"
+        app:layout_constraintTop_toBottomOf="@+id/phoneNum" />
 </androidx.constraintlayout.widget.ConstraintLayout>
