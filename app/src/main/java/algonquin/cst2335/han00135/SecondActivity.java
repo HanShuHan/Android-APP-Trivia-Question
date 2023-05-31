@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -17,8 +19,17 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 public class SecondActivity extends AppCompatActivity {
 
+
+    private static boolean compress(FileOutputStream fOS, Bitmap bitmap) {
+        return bitmap.compress(Bitmap.CompressFormat.PNG, 100, fOS);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +46,13 @@ public class SecondActivity extends AppCompatActivity {
         ImageView cameraImg = findViewById(R.id.cameraImg);
         Button chgPicBtn = findViewById(R.id.chgPicBtn);
 
+        // Load Image File
+        File file = new File(getFilesDir(), "image.png");
+        if (file.exists()) {
+            Bitmap imgBitmap = BitmapFactory.decodeFile(getFilesDir().getAbsolutePath() + "/image.png");
+            cameraImg.setImageBitmap(imgBitmap);
+        }
+
         // Preferences
         SharedPreferences prefs = getSharedPreferences("myData", Context.MODE_PRIVATE);
         phoneNum.setText(prefs.getString("phoneNum", ""));
@@ -47,23 +65,18 @@ public class SecondActivity extends AppCompatActivity {
             startActivity(call);
         });
 
-        cameraImg.setOnClickListener(v -> {
-            Intent takePhoto = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            startActivity(takePhoto);
-        });
-
         // Change picture button onclick: ActivityResultLauncher
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        ActivityResultLauncher<Intent> cameraResult = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        Intent data = result.getData();
+                        Bitmap bitmap = data.getParcelableExtra("data");
+                        cameraImg.setImageBitmap(bitmap);
+                    }
+                });
         chgPicBtn.setOnClickListener(v -> {
-            ActivityResultLauncher<Intent> cameraResult = registerForActivityResult(
-                    new ActivityResultContracts.StartActivityForResult(),
-                    result -> {
-                        if (result.getResultCode() == Activity.RESULT_OK) {
-                            Intent data = result.getData();
-                            Bitmap bitmap = data.getParcelableExtra("data");
-                            cameraImg.setImageBitmap(bitmap);
-                        }
-                    });
             cameraResult.launch(cameraIntent);
         });
     }
@@ -79,4 +92,20 @@ public class SecondActivity extends AppCompatActivity {
         editor.apply();
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        // Save Image File
+        ImageView cameraImg = findViewById(R.id.cameraImg);
+        try (FileOutputStream fOS = openFileOutput("image.png", Context.MODE_PRIVATE)) {
+            Bitmap bitmap = ((BitmapDrawable) cameraImg.getDrawable()).getBitmap();
+            compress(fOS, bitmap);
+            fOS.flush();
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
