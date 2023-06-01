@@ -1,6 +1,5 @@
 package algonquin.cst2335.han00135;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -12,35 +11,29 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
-
-    public static String TAG = "MainActivity";
+    private static final String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Log.w(TAG, "In onCreate() - Loading Widgets");
+        Log.w(TAG, "In onCreate() - Loading Widgets"); // Log
 
-        // Part 2
-        SharedPreferences prefs = getSharedPreferences("myData", Context.MODE_PRIVATE);
-        EditText emailEditText = findViewById(R.id.emailInput);
-        emailEditText.setText(prefs.getString("loginName", ""));
+        // Widgets
+        Button loginBtn = findViewById(R.id.loginBtn); // Login Button
+        EditText emailEditText = findViewById(R.id.emailInput); // Email Address
 
-        // Adds login button function to the second Activity.
-        Button loginBtn = findViewById(R.id.loginBtn);
+        // Sets history email address
+        SharedPreferences prefs = getSharedPreferences("myData", MODE_PRIVATE);
+        emailEditText.setText(prefs.getString("emailAddress", ""));
+
+        // Sets login button's on-click listener
         loginBtn.setOnClickListener(v -> {
-            //
-
-            SharedPreferences.Editor editor = prefs.edit();
-            editor.putString("loginName", emailEditText.getText().toString());
-            editor.apply();
-
             // Next Page
             Intent nextPage = new Intent(this, SecondActivity.class);
             nextPage.putExtra("emailAddress", emailEditText.getText().toString());
             startActivity(nextPage);
         });
-
     }
 
     @Override
@@ -59,6 +52,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         Log.w(TAG, "The application no longer responds to user input.");
+
+        // Saves the email address into Shared Preferences
+        SharedPreferences.Editor editor = getSharedPreferences("myData", MODE_PRIVATE).edit();
+        EditText emailEditText = findViewById(R.id.emailInput); // Email Address
+        editor.putString("emailAddress", emailEditText.getText().toString());
+        editor.apply();
     }
 
     @Override

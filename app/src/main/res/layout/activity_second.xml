@@ -7,18 +7,18 @@
     tools:context=".SecondActivity">
 
     <TextView
-        android:id="@+id/welcomeMsg"
+        android:id="@+id/welcomeText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:text="TextView"
+        android:text="Welcome!"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/phoneNum"
+        android:id="@+id/phoneNumber"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -28,36 +28,36 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/welcomeMsg" />
+        app:layout_constraintTop_toBottomOf="@+id/welcomeText" />
 
     <Button
         android:id="@+id/callBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="CALL NUMBER"
-        app:layout_constraintBaseline_toBaselineOf="@+id/phoneNum"
+        app:layout_constraintBaseline_toBaselineOf="@+id/phoneNumber"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/phoneNum" />
+        app:layout_constraintStart_toEndOf="@+id/phoneNumber" />
 
     <ImageView
-        android:id="@+id/cameraImg"
+        android:id="@+id/cameraImage"
         android:layout_width="238dp"
         android:layout_height="244dp"
         android:layout_marginTop="20dp"
         android:rotation="270"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/phoneNum"
+        app:layout_constraintTop_toBottomOf="@+id/phoneNumber"
         app:srcCompat="@android:drawable/ic_menu_camera" />
 
     <Button
-        android:id="@+id/chgPicBtn"
+        android:id="@+id/changePicBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="72dp"
         android:text="CHANGE PICTURE"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/cameraImg"
-        app:layout_constraintTop_toBottomOf="@+id/phoneNum" />
+        app:layout_constraintStart_toEndOf="@+id/cameraImage"
+        app:layout_constraintTop_toBottomOf="@+id/phoneNumber" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
