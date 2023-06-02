@@ -1,6 +1,5 @@
 package algonquin.cst2335.han00135;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -56,7 +55,9 @@ public class SecondActivity extends AppCompatActivity {
         callBtn.setOnClickListener(v -> {
             Intent call = new Intent(Intent.ACTION_DIAL);
             call.setData(Uri.parse("tel:" + phoneNum.getText().toString()));
-            startActivity(call);
+            if (call.resolveActivity(getPackageManager()) != null) {
+                startActivity(call);
+            }
         });
         // Register Camera Intent Activity Launcher
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -70,9 +71,7 @@ public class SecondActivity extends AppCompatActivity {
                     }
                 });
         // Sets the change picture button the functionality of on-click camera activity launch
-        chgPicBtn.setOnClickListener(v -> {
-            cameraLauncher.launch(cameraIntent);
-        });
+        chgPicBtn.setOnClickListener(v -> cameraLauncher.launch(cameraIntent));
     }
 
     @Override
@@ -87,7 +86,7 @@ public class SecondActivity extends AppCompatActivity {
 
         // Saves Image File
         ImageView cameraImg = findViewById(R.id.cameraImage);
-        try (FileOutputStream fOS = openFileOutput("image.png", Context.MODE_PRIVATE)) { // Throws fileNotFoundException
+        try (FileOutputStream fOS = openFileOutput("image.png", MODE_PRIVATE)) { // Throws fileNotFoundException
             Bitmap bitmap = ((BitmapDrawable) cameraImg.getDrawable()).getBitmap();
             if (isCompress(fOS, bitmap)) {
                 fOS.flush(); // Throws IOException

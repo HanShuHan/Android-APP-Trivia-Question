@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = getSharedPreferences("myData", MODE_PRIVATE).edit();
         EditText emailEditText = findViewById(R.id.emailInput); // Email Address
         editor.putString("emailAddress", emailEditText.getText().toString());
-        editor.apply();
+        editor.commit();
     }
 
     @Override
