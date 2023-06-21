@@ -11,6 +11,10 @@ package algonquin.cst2335.han00135;
  * Declaration: This is my own original work and is free from Plagiarism.
  */
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 /**
  * Todo:
  *
@@ -19,9 +23,19 @@ package algonquin.cst2335.han00135;
  * @see
  * @since 20.0.1
  */
+@Entity
 public class ChatMessage {
+
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "id")
+    private Long id;
+    @ColumnInfo(name = "message")
     private String message;
+
+    @ColumnInfo(name = "time_sent")
     private String timeSent;
+
+    @ColumnInfo(name = "sent_or_receive")
     private boolean isSentButton;
 
     public ChatMessage() {
@@ -31,6 +45,14 @@ public class ChatMessage {
         this.message = message;
         this.timeSent = timeSent;
         this.isSentButton = isSentButton;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getMessage() {
