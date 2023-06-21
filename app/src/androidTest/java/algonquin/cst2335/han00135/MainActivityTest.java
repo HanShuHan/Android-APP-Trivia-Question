@@ -28,6 +28,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import algonquin.cst2335.han00135.activity.MainActivity;
+
 /**
  * The application's main activity test class.
  *

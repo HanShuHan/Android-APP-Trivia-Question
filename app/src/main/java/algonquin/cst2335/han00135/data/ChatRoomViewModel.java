@@ -16,7 +16,7 @@ import androidx.lifecycle.ViewModel;
 
 import java.util.ArrayList;
 
-import algonquin.cst2335.han00135.ChatMessage;
+import algonquin.cst2335.han00135.entity.ChatMessage;
 
 /**
  * Todo:

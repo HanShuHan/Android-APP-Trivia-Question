@@ -1,4 +1,4 @@
-package algonquin.cst2335.han00135;
+package algonquin.cst2335.han00135.activity;
 
 /*
  * Filename: MainActivity.java
@@ -21,6 +21,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import algonquin.cst2335.han00135.R;
 
 /**
  * The application's main activity.

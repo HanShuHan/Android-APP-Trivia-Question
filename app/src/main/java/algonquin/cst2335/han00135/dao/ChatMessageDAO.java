@@ -1,4 +1,4 @@
-package algonquin.cst2335.han00135;
+package algonquin.cst2335.han00135.dao;
 
 import androidx.room.Dao;
 import androidx.room.Delete;
@@ -7,6 +7,8 @@ import androidx.room.Query;
 import androidx.room.Update;
 
 import java.util.List;
+
+import algonquin.cst2335.han00135.entity.ChatMessage;
 
 /*
  * Filename: ChatMessageDAO.java
