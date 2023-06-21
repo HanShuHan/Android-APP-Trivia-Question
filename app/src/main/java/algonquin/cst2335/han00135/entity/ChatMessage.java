@@ -1,4 +1,4 @@
-package algonquin.cst2335.han00135;
+package algonquin.cst2335.han00135.entity;
 
 /*
  * Filename: ChatMessage.java

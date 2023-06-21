@@ -1,4 +1,4 @@
-package algonquin.cst2335.han00135.data;
+package algonquin.cst2335.han00135.database;
 
 /*
  * Filename: ChatMessageDatabase.java
@@ -14,8 +14,8 @@ package algonquin.cst2335.han00135.data;
 import androidx.room.Database;
 import androidx.room.RoomDatabase;
 
-import algonquin.cst2335.han00135.ChatMessage;
-import algonquin.cst2335.han00135.ChatMessageDAO;
+import algonquin.cst2335.han00135.dao.ChatMessageDAO;
+import algonquin.cst2335.han00135.entity.ChatMessage;
 
 /**
  * Todo:
