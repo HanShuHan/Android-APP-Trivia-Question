@@ -114,7 +114,7 @@ public class ChatRoom extends AppCompatActivity {
 
     }
 
-    private class MyRowHolder extends RecyclerView.ViewHolder {
+    public class MyRowHolder extends RecyclerView.ViewHolder {
 
         private final TextView message;
         private final TextView time;
