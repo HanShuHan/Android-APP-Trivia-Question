@@ -33,4 +33,5 @@ public class ChatRoomViewModel extends ViewModel {
     public MutableLiveData<ArrayList<ChatMessage>> getChatMessages() {
         return chatMessages;
     }
+
 }

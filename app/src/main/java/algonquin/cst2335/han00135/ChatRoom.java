@@ -1,15 +1,14 @@
 package algonquin.cst2335.han00135;
 
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.SimpleDateFormat;
@@ -45,16 +44,15 @@ public class ChatRoom extends AppCompatActivity {
         }
 
         // Sets the RecycleView Adapter
-//        binding.recycleView.setLayoutManager(new LinearLayoutManager(this));
         binding.recycleView.setAdapter(myAdapter = new RecyclerView.Adapter<MyRowHolder>() {
             @NonNull
             @Override
             public MyRowHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
                 if (viewType == 0) {
-                    SentMessageBinding messageBinding = SentMessageBinding.inflate(getLayoutInflater());
+                    SentMessageBinding messageBinding = SentMessageBinding.inflate(getLayoutInflater(), parent, false);
                     return new MyRowHolder(messageBinding.getRoot());
                 } else {
-                    ReceiveMessageBinding messageBinding = ReceiveMessageBinding.inflate(getLayoutInflater());
+                    ReceiveMessageBinding messageBinding = ReceiveMessageBinding.inflate(getLayoutInflater(), parent, false);
                     return new MyRowHolder(messageBinding.getRoot());
                 }
             }
@@ -65,7 +63,6 @@ public class ChatRoom extends AppCompatActivity {
 
                 holder.message.setText(chatMessage.getMessage());
                 holder.time.setText(chatMessage.getTimeSent());
-                holder.imageView.setImageBitmap(BitmapFactory.decodeFile("res/drawable/receive_image"));
             }
 
             @Override
@@ -79,6 +76,8 @@ public class ChatRoom extends AppCompatActivity {
                 return isSentButton ? 0 : 1;
             }
         });
+        // Sets LayoutManager
+        binding.recycleView.setLayoutManager(new LinearLayoutManager(this));
 
         // Send Button
         binding.sendButton.setOnClickListener(v -> {
@@ -90,7 +89,7 @@ public class ChatRoom extends AppCompatActivity {
             chatMessage.setSentButton(true);
 
             chatMessages.add(chatMessage);
-//            chatRoomModel.getChatMessages().postValue(chatMessages);
+            //chatRoomModel.getChatMessages().postValue(chatMessages);
             myAdapter.notifyItemInserted(chatMessages.size() - 1);
 //            myAdapter.notifyDataSetChanged();
 
@@ -115,18 +114,16 @@ public class ChatRoom extends AppCompatActivity {
 
     }
 
-    private class MyRowHolder extends RecyclerView.ViewHolder {
+    public class MyRowHolder extends RecyclerView.ViewHolder {
 
         private final TextView message;
         private final TextView time;
-        private final ImageView imageView;
 
         public MyRowHolder(@NonNull View itemView) {
             super(itemView);
 
             message = itemView.findViewById(R.id.message);
             time = itemView.findViewById(R.id.time);
-            imageView = itemView.findViewById(R.id.imageView);
         }
     }
 
