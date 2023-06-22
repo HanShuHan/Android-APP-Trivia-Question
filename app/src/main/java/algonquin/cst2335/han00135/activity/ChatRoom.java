@@ -80,7 +80,7 @@ public class ChatRoom extends AppCompatActivity {
 
             chatMessages.add(chatMessage);
             Executors.newSingleThreadExecutor().execute(() -> {
-                chatMessageDAO.insert(chatMessage);
+                chatMessage.setId(chatMessageDAO.insert(chatMessage));
             });
 //            chatRoomModel.getChatMessages().postValue(chatMessages);
             myAdapter.notifyItemInserted(chatMessages.size() - 1);
@@ -101,7 +101,7 @@ public class ChatRoom extends AppCompatActivity {
 
             chatMessages.add(chatMessage);
             Executors.newSingleThreadExecutor().execute(() -> {
-                chatMessageDAO.insert(chatMessage);
+                chatMessage.setId(chatMessageDAO.insert(chatMessage));
             });
 //            chatRoomModel.getChatMessages().postValue(chatMessages);
             myAdapter.notifyItemInserted(chatMessages.size() - 1);

@@ -41,12 +41,6 @@ public class ChatMessage {
     public ChatMessage() {
     }
 
-    public ChatMessage(String message, String timeSent, boolean isSentButton) {
-        this.message = message;
-        this.timeSent = timeSent;
-        this.isSentButton = isSentButton;
-    }
-
     public Long getId() {
         return id;
     }
