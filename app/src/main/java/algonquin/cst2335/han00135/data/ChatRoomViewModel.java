@@ -28,10 +28,19 @@ import algonquin.cst2335.han00135.entity.ChatMessage;
  */
 public class ChatRoomViewModel extends ViewModel {
 
-    private final MutableLiveData<ArrayList<ChatMessage>> chatMessages = new MutableLiveData<>();
+    private final MutableLiveData<ArrayList<ChatMessage>> chatMessages;
+    private final MutableLiveData<ChatMessage> chatMessage;
+
+    public ChatRoomViewModel() {
+        chatMessages = new MutableLiveData<>();
+        chatMessage = new MutableLiveData<>();
+    }
 
     public MutableLiveData<ArrayList<ChatMessage>> getChatMessages() {
         return chatMessages;
     }
 
+    public MutableLiveData<ChatMessage> getChatMessage() {
+        return chatMessage;
+    }
 }
