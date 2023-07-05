@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <TextView
+        android:id="@+id/selected_chat_message_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:text="Message Goes Here"
+        android:textSize="28dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/selected_chat_message_time_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Time Goes Here"
+        android:textSize="28dp"
+        app:layout_constraintStart_toStartOf="@+id/selected_chat_message_text"
+        app:layout_constraintTop_toBottomOf="@+id/selected_chat_message_text" />
+
+    <TextView
+        android:id="@+id/selected_chat_message_is_sent_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Is Sent or Received Goes Here"
+        android:textSize="28dp"
+        app:layout_constraintStart_toStartOf="@+id/selected_chat_message_time_text"
+        app:layout_constraintTop_toBottomOf="@+id/selected_chat_message_time_text" />
+
+    <TextView
+        android:id="@+id/selected_chat_message_database_id_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Database Id Goes Here"
+        android:textSize="28dp"
+        app:layout_constraintStart_toStartOf="@+id/selected_chat_message_is_sent_text"
+        app:layout_constraintTop_toBottomOf="@+id/selected_chat_message_is_sent_text" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

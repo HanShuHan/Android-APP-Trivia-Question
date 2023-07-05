@@ -1,6 +1,5 @@
 package algonquin.cst2335.han00135.activity;
 
-import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,13 +12,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
-import com.google.android.material.snackbar.Snackbar;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.concurrent.Executors;
 
+import algonquin.cst2335.han00135.ChatMessageDetailFragment;
 import algonquin.cst2335.han00135.R;
 import algonquin.cst2335.han00135.dao.ChatMessageDAO;
 import algonquin.cst2335.han00135.data.ChatRoomViewModel;
@@ -62,6 +60,12 @@ public class ChatRoom extends AppCompatActivity {
         }
         // Sets the RecycleView Adapter
         setAdapter();
+
+        //
+        chatRoomModel.getChatMessage().observe(this, selectedChatMessage -> {
+            ChatMessageDetailFragment detailFragment = new ChatMessageDetailFragment(selectedChatMessage);
+            getSupportFragmentManager().beginTransaction().replace(R.id.selected_chat_message_fragment, detailFragment).addToBackStack(null).commit();
+        });
 
         // Send Button
         setSentButton();
@@ -161,34 +165,37 @@ public class ChatRoom extends AppCompatActivity {
 
             // Sets delete dialog
             itemView.setOnClickListener(v -> {
-                int position = getAbsoluteAdapterPosition();
-                ChatMessage chatMessage = chatMessages.get(position);
+                ChatMessage selectedMessage = chatMessages.get(getAbsoluteAdapterPosition());
+                chatRoomModel.getChatMessage().postValue(selectedMessage);
 
-                new AlertDialog.Builder(ChatRoom.this)
-                        .setTitle("Warning: ")
-                        .setMessage("Do you want to delete the message: " + chatMessage.getMessage())
-                        .setNegativeButton("No", (dialog, which) -> {
-                        })
-                        .setPositiveButton("Yes", (dialog, which) -> {
-                            // Deletes the chatMessage in the Database
-                            Executors.newSingleThreadExecutor().execute(() -> {
-                                chatMessageDAO.deleteMessage(chatMessage);
-                            });
-                            chatMessages.remove(position);
-                            myAdapter.notifyItemRemoved(position);
-
-                            Snackbar.make(message, "You deleted message #" + (position + 1), Snackbar.LENGTH_LONG)
-                                    .setAction("UNDO", v1 -> {
-                                        // Re-inserts the chatMessage into the Database
-                                        Executors.newSingleThreadExecutor().execute(() -> {
-                                            chatMessageDAO.insert(chatMessage);
-                                        });
-                                        chatMessages.add(position, chatMessage);
-                                        myAdapter.notifyItemInserted(position);
-                                    })
-                                    .show();
-                        })
-                        .create().show();
+//                int position = getAbsoluteAdapterPosition();
+//                ChatMessage chatMessage = chatMessages.get(position);
+//
+//                new AlertDialog.Builder(ChatRoom.this)
+//                        .setTitle("Warning: ")
+//                        .setMessage("Do you want to delete the message: " + chatMessage.getMessage())
+//                        .setNegativeButton("No", (dialog, which) -> {
+//                        })
+//                        .setPositiveButton("Yes", (dialog, which) -> {
+//                            // Deletes the chatMessage in the Database
+//                            Executors.newSingleThreadExecutor().execute(() -> {
+//                                chatMessageDAO.deleteMessage(chatMessage);
+//                            });
+//                            chatMessages.remove(position);
+//                            myAdapter.notifyItemRemoved(position);
+//
+//                            Snackbar.make(message, "You deleted message #" + (position + 1), Snackbar.LENGTH_LONG)
+//                                    .setAction("UNDO", v1 -> {
+//                                        // Re-inserts the chatMessage into the Database
+//                                        Executors.newSingleThreadExecutor().execute(() -> {
+//                                            chatMessageDAO.insert(chatMessage);
+//                                        });
+//                                        chatMessages.add(position, chatMessage);
+//                                        myAdapter.notifyItemInserted(position);
+//                                    })
+//                                    .show();
+//                        })
+//                        .create().show();
             });
         }
     }
