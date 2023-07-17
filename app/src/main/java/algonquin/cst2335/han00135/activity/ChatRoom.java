@@ -2,15 +2,11 @@ package algonquin.cst2335.han00135.activity;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -22,7 +18,6 @@ import androidx.room.Room;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import algonquin.cst2335.han00135.R;
@@ -82,44 +77,6 @@ public class ChatRoom extends AppCompatActivity {
         setSentButton();
         // Receive Button
         setReceiveButton();
-
-        // Sets toolbar
-        setSupportActionBar(binding.myToolbar);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        getMenuInflater().inflate(R.menu.my_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        super.onOptionsItemSelected(item);
-        final int itemId = item.getItemId();
-        final ChatMessage theMessage = chatRoomModel.getChatMessage().getValue();
-
-        if (itemId == R.id.delete_item && theMessage != null) {
-            new AlertDialog.Builder(this)
-                    .setTitle("Do you want to delete the chat message?")
-                    .setNegativeButton("No", (dialog, which) -> {
-                    })
-                    .setPositiveButton("Yes", (dialog, which) -> {
-                        final ExecutorService executor = Executors.newSingleThreadExecutor();
-                        final int selectedRow = chatRoomModel.getSelectedRow().getValue();
-
-                        executor.execute(() -> chatMessageDAO.deleteMessage(theMessage));
-                        chatMessages.remove(selectedRow);
-                        myAdapter.notifyItemRemoved(selectedRow);
-                        fragmentManager.popBackStack();
-                        chatRoomModel.getChatMessage().postValue(null);
-                    })
-                    .create().show();
-        } else if (itemId == R.id.about) {
-            Toast.makeText(this, "Version 1.0, created by Shu Han Han", Toast.LENGTH_LONG).show();
-        }
-        return true;
     }
 
     private void setReceiveButton() {
