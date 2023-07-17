@@ -30,10 +30,12 @@ public class ChatRoomViewModel extends ViewModel {
 
     private final MutableLiveData<ArrayList<ChatMessage>> chatMessages;
     private final MutableLiveData<ChatMessage> chatMessage;
+    private final MutableLiveData<Integer> selectedRow;
 
     public ChatRoomViewModel() {
         chatMessages = new MutableLiveData<>();
         chatMessage = new MutableLiveData<>();
+        selectedRow = new MutableLiveData<>();
     }
 
     public MutableLiveData<ArrayList<ChatMessage>> getChatMessages() {
@@ -42,5 +44,9 @@ public class ChatRoomViewModel extends ViewModel {
 
     public MutableLiveData<ChatMessage> getChatMessage() {
         return chatMessage;
+    }
+
+    public MutableLiveData<Integer> getSelectedRow() {
+        return selectedRow;
     }
 }
