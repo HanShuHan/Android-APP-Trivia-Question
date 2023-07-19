@@ -11,16 +11,29 @@ package algonquin.cst2335.han00135;
  * Declaration: This is my own original work and is free from Plagiarism.
  */
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.view.View;
+import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.ImageRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+
+import algonquin.cst2335.han00135.databinding.ActivityMainBinding;
 
 /**
  * The application's main activity.
@@ -31,116 +44,100 @@ import java.util.List;
  */
 public class MainActivity extends AppCompatActivity {
 
-    /**
-     * Tells you to insert the password.
-     */
-    private TextView passwordMessage;
+    private ActivityMainBinding binding;
 
-    /**
-     * The login button.
-     */
-    private Button loginButton;
-
-    /**
-     * The user input password.
-     */
-    private EditText password;
+    private RequestQueue queue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        // Widgets
-        passwordMessage = findViewById(R.id.passwordMessage);
-        loginButton = findViewById(R.id.loginButton);
-        password = findViewById(R.id.password);
+        //
+        queue = Volley.newRequestQueue(this);
 
-        // Sets the login button's on-click password validation
-        loginButton.setOnClickListener(v -> {
-            String pwd = password.getText().toString(); // Password
-
-            List<String> errorMessages = checkPasswordComplexity(pwd);
-            // Checks if the password meets the requirements
-            if (errorMessages.isEmpty()) {
-                passwordMessage.setText("Your password meets the requirements!");
-            } else {
-                passwordMessage.setText("You shall not pass");
-                // Builds the toast message
-                StringBuilder toastMessage = new StringBuilder("The password lacks:\n\n");
-                for (int i = 0; i < errorMessages.size(); i++) {
-                    toastMessage.append(i + 1).append(". ")
-                            .append(errorMessages.get(i))
-                            .append("\n");
-                }
-                Toast.makeText(this, toastMessage, Toast.LENGTH_LONG).show();
+        binding.getForecastButton.setOnClickListener(v -> {
+            final String city = binding.cityName.getText().toString().trim();
+            final String url = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=7e943c97096a9784391a981c4d878b22&units=metric";
+            if (!city.isEmpty()) {
+                requestWeatherAPI(url);
             }
         });
     }
 
+    private void requestWeatherAPI(@NonNull String url) {
+        final JsonObjectRequest request = new JsonObjectRequest(
+                Request.Method.GET,
+                url,
+                null,
+                response -> {
+                    try {
+                        final JSONArray weatherArray = response.getJSONArray("weather");
+                        final JSONObject weatherArrayFirstObject = weatherArray.getJSONObject(0);
+                        final String description = weatherArrayFirstObject.getString("description");
+                        final String iconName = weatherArrayFirstObject.getString("icon");
+                        final String imageURL = "http://openweathermap.org/img/w/" + iconName + ".png";
+                        final JSONObject main = response.getJSONObject("main");
+                        final double temp = main.getDouble("temp");
+                        final double tempMax = main.getDouble("temp_max");
+                        final double tempMin = main.getDouble("temp_min");
+                        final double humidity = main.getInt("humidity");
+                        final String imageFilePath = getFilesDir().getPath() + "/" + iconName + ".png";
+                        final File imageFile = new File(imageFilePath);
+                        final ImageRequest imageRequest;
+                        final Bitmap bitmap;
+
+                        runOnUiThread(() -> {
+                            binding.temp.setText("The current temperature is " + temp);
+                            binding.temp.setVisibility(View.VISIBLE);
+                            binding.maxTemp.setText("The max temperature is " + tempMax);
+                            binding.maxTemp.setVisibility(View.VISIBLE);
+                            binding.minTemp.setText("The min temperature is " + tempMin);
+                            binding.minTemp.setVisibility(View.VISIBLE);
+                            binding.humidity.setText("The humidity is " + humidity);
+                            binding.humidity.setVisibility(View.VISIBLE);
+                            binding.description.setText(description);
+                            binding.description.setVisibility(View.VISIBLE);
+                        });
+
+                        if (imageFile.exists()) {
+                            bitmap = BitmapFactory.decodeFile(imageFilePath);
+                            runOnUiThread(() -> binding.icon.setImageBitmap(bitmap));
+                        } else {
+                            requestWeatherImageAPI(imageURL);
+                        }
+                    } catch (JSONException e) {
+                        throw new RuntimeException(e);
+                    }
+                },
+                error -> {
+                });
+        queue.add(request);
+    }
+
     /**
-     * Returns the invalid password messages of not meeting the requirements.
-     *
-     * @param password the user input password
-     * @return the password invalid messages of not meeting the requirements in a list
+     * @param imageURL
      */
-    private List<String> checkPasswordComplexity(String password) {
-        final List<String> errorMessages = new ArrayList<>(); // Erro
-        boolean hasUppercase = false;
-        boolean hasLowercase = false;
-        boolean hasDigit = false;
-        boolean hasSpecialChar = false;
-        int correctCount = 0;
-
-        // Checks the password by iterating the letters
-        for (int i = 0; i < password.length() && correctCount < 4; i++) {
-            final char c = password.charAt(i); // The current being checked letter
-            final String specialChars = "#$%^&*!@?";
-
-            // Checks if the character is a uppercase until finds one
-            if (!hasUppercase) {
-                if (Character.isUpperCase(c)) {
-                    hasUppercase = true;
-                    correctCount++;
-                }
-            }
-            // Checks if the character is a lowercase until finds one
-            if (!hasLowercase) {
-                if (Character.isLowerCase(c)) {
-                    hasLowercase = true;
-                    correctCount++;
-                }
-            }
-            // Checks if the character is a digit until finds one
-            if (!hasDigit) {
-                if (Character.isDigit(c)) {
-                    hasDigit = true;
-                    correctCount++;
-                }
-            }
-            // Checks if the character is a special character until finds one
-            if (!hasSpecialChar) {
-                String c1 = Character.toString(c);
-                if (specialChars.contains(c1)) {
-                    hasSpecialChar = true;
-                    correctCount++;
-                }
-            }
-        }
-        // Adds the invalid password messages of not meeting the requirements into a list
-        if (!hasUppercase) {
-            errorMessages.add("An uppercase letter.");
-        }
-        if (!hasLowercase) {
-            errorMessages.add("A lowercase letter.");
-        }
-        if (!hasDigit) {
-            errorMessages.add("A digital number.");
-        }
-        if (!hasSpecialChar) {
-            errorMessages.add("A special character.");
-        }
-        return errorMessages;
+    private void requestWeatherImageAPI(@NonNull String imageURL) {
+        final int startIndex = imageURL.lastIndexOf("/") + 1;
+        final String iconName = imageURL.substring(startIndex);
+        final ImageRequest imageRequest = new ImageRequest(
+                imageURL,
+                bitmap -> {
+                    runOnUiThread(() -> binding.icon.setImageBitmap(bitmap));
+                    try {
+                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, openFileOutput(iconName, MODE_PRIVATE));
+                    } catch (FileNotFoundException e) {
+                        throw new RuntimeException(e);
+                    }
+                },
+                1024, 1024,
+                ImageView.ScaleType.CENTER,
+                null,
+                error -> {
+                });
+        queue.add(imageRequest);
     }
 
 }
