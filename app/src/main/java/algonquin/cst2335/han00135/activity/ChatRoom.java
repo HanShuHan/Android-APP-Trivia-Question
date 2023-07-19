@@ -278,4 +278,9 @@ public class ChatRoom extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        chatRoomModel.getChatMessage().postValue(null);
+        super.onBackPressed();
+    }
 }
