@@ -45,7 +45,7 @@ public class ChatRoom extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         // ChatMessage DAO
-        chatMessageDAO = Room.databaseBuilder(getApplicationContext(), ChatMessageDatabase.class, "database-name").build()
+        chatMessageDAO = Room.databaseBuilder(this, ChatMessageDatabase.class, "database-name").build()
                 .chatMessageDAO();
 
         // ChatRoom View Model
