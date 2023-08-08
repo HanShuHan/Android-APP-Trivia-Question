@@ -173,7 +173,7 @@ public class ChatRoom extends AppCompatActivity {
             super.onCreateView(inflater, container, savedInstanceState);
 
             if (selectedMessage != null) {
-                final ChatMessageDetailLayoutBinding binding = ChatMessageDetailLayoutBinding.inflate(inflater, container, false);
+                final ChatMessageDetailLayoutBinding binding = ChatMessageDetailLayoutBinding.inflate(inflater);
                 binding.selectedChatMessageText.setText(selectedMessage.getMessage());
                 binding.selectedChatMessageTimeText.setText(selectedMessage.getTimeSent());
                 binding.selectedChatMessageIsSentText.setText(String.valueOf(selectedMessage.isSentButton()));
